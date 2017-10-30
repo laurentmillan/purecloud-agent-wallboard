@@ -1,0 +1,22 @@
+.presence_available, .presence_idle{ background-color: #7D2; }
+.presence_busy, .presence_meeting{ background-color: red;	}
+.presence_away, .presence_break, .presence_meal, .presence_training{ background-color: #fb3;	}
+.presence_offline{ background-color: #666;	}
+.presence_outofoffice{ background-color: #ff1dce;	}
+.presence_onqueue, .presence_on_queue{ background-color: #52cef8;	}
+.presence_notactive{
+  background-color: gray;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255,255,255,.5) 4px, rgba(255,255,255,.5) 8px);
+}
+.userImage{
+  height: 64px;
+  width: 64px;
+  display: block;
+  float: left;
+}
+.userImage.presence_available, .userImage.presence_idle{ border: solid 3px #7D2; }
+.userImage.presence_busy, .userImage.presence_meeting{ border: solid 3px red;	}
+.userImage.presence_away, .userImage.presence_break, .userImage.presence_meal, .userImage.presence_training{ border: solid 3px #fb3;	}
+.userImage.presence_offline{ border: solid 3px #666;	}
+.userImage.presence_outofoffice{ border: solid 3px #ff1dce; }
+.userImage.presence_onqueue, .userImage.presence_on_queue{ border: solid 3px #52cef8; }

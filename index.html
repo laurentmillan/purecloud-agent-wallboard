@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PureCloud email manager</title>
+    <script src="libs/vue.js"></script>
+    <script src="libs/jquery-3.2.1.min.js"></script>
+    <script src="libs/popper.min.js"></script>
+    <script src="libs/bootstrap.min.js"></script>
+    <script src="libs/purecloud-platform-client-v2.min.js"></script>
+    <script src="libs/moment-with-locales.min.js"></script>
+
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+
+    <div id="app" class="container">
+      <!-- Choix de la file d'attente -->
+      <div class="row" style="margin-top:20px;">
+        <div class="dropdown">
+          <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span v-if="selectedQueue == null">Choisir la file d'attente</span>
+            <span v-else>{{selectedQueue.name}}</span>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <!-- On change la queue sélectionnée quand on clique sur un élément de la dropdown list -->
+            <a v-for="queue in myQueues" class="dropdown-item" @click="selectQueue(queue)">{{queue.name}}</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <!-- On affiche tous les users de la queue, leur image et leur statut -->
+        <div v-for="user in users" :class="getStatusClass(user)" style="display: inline-block; border-radius: 50%;">
+          <img :src="getUserImage(user)" class="userImage" style="border-radius: 50%;padding: 4px;">
+        </div>
+        <div style="clear:both;"></div>
+      </div>
+
+      <!-- Résumé par statut -->
+      <div v-if="selectedQueue" style="margin-top: 20px;">
+        <!-- Users available -->
+        <div style="display: inline-block;">
+          <div class="card text-white mb-3 presence_onqueue" style="max-width: 20rem;">
+            <div class="card-header">En ligne</div>
+            <div class="card-body">
+              <h4 class="card-title">{{usersForStatusOnQueue.length}}/{{users.length}} ({{Math.round(100*usersForStatusOnQueue.length/users.length)}}%)</h4>
+              <p class="card-text">
+                <div v-for="user in usersForStatusOnQueue" :class="getStatusClass(user)" style="display: inline-block; border-radius: 50%;">
+                  <img :src="getUserImage(user)" class="userImage" style="border-radius: 50%;padding: 4px;">
+                </div>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users away -->
+        <div style="display: inline-block;">
+          <div class="card text-white mb-3 presence_away" style="max-width: 20rem;">
+            <div class="card-header">En Pause</div>
+            <div class="card-body">
+              <h4 class="card-title">{{usersForStatusAway.length}}/{{users.length}} ({{Math.round(100*usersForStatusAway.length/users.length)}}%)</h4>
+              <p class="card-text">
+                <div v-for="user in usersForStatusAway" :class="getStatusClass(user)" style="display: inline-block; border-radius: 50%;">
+                  <img :src="getUserImage(user)" class="userImage" style="border-radius: 50%;padding: 4px;">
+                </div>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users busy -->
+        <div style="display: inline-block;">
+          <div class="card text-white mb-3 presence_busy" style="max-width: 20rem;">
+            <div class="card-header">Occupé</div>
+            <div class="card-body">
+              <h4 class="card-title">{{usersForStatusBusy.length}}/{{users.length}} ({{Math.round(100*usersForStatusBusy.length/users.length)}}%)</h4>
+              <p class="card-text">
+                <div v-for="user in usersForStatusBusy" :class="getStatusClass(user)" style="display: inline-block; border-radius: 50%;">
+                  <img :src="getUserImage(user)" class="userImage" style="border-radius: 50%;padding: 4px;">
+                </div>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users offline -->
+        <div style="display: inline-block;">
+          <div class="card text-white mb-3 presence_available" style="max-width: 20rem;">
+            <div class="card-header">Hors file</div>
+            <div class="card-body">
+              <h4 class="card-title">{{usersForStatusAvailable.length}}/{{users.length}} ({{Math.round(100*usersForStatusAvailable.length/users.length)}}%)</h4>
+              <p class="card-text">
+                <div v-for="user in usersForStatusAvailable" :class="getStatusClass(user)" style="display: inline-block; border-radius: 50%;">
+                  <img :src="getUserImage(user)" class="userImage" style="border-radius: 50%;padding: 4px;">
+                </div>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="js/index.js"></script>
+  </body>
+</html>
